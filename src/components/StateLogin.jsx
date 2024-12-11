@@ -33,6 +33,11 @@ export default function Login() {
     event.preventDefault();
     console.log('userEmail: ' + enteredValues.email);
     console.log('password: ' + enteredValues.password)
+    // reset form
+    setEnteredValues({
+      email: '',
+      password: ''
+    })
   }
   
   // form triggers submit event when button pressed

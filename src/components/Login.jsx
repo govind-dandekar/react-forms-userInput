@@ -11,6 +11,11 @@ export default function Login() {
     const enteredPassword = passwordRef.current.value;
 
     console.log(enteredEmail, enteredPassword);
+    
+    // reset form  - should typically have React update DOM
+    // and not make imperative changes to DOM
+    emailRef.current.value = '';
+    passwordRef.current.value = '';
   }
   
   // form triggers submit event when button pressed

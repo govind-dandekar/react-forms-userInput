@@ -13,6 +13,10 @@ export default function Signup() {
 		const data = Object.fromEntries(fd.entries());
 		data.acquisition = acquisitionChannel;
 		console.log(data);
+
+		// programattic reset; target is underlying form element with reset()
+		// is also imperative code (but better than resetting multiple refs)
+		// event.target.reset();
 	}
 	
 	return (
