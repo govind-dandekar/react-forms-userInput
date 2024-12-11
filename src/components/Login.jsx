@@ -1,38 +1,16 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 
 export default function Login() {
-  // const [enteredEmail, setEnteredEmail] = useState('');
-  // const [enteredPassword, setEnteredPassword] = useState('');
-
-  const [enteredValues, setEnteredValues] = useState({
-    email: '',
-    password: ''
-  })
-
-  function handleInputChange(value, inputIdentifier){
-    setEnteredValues((previousValues) => {
-      return (
-        {
-          ...previousValues,
-          [inputIdentifier]: value
-        }
-      )
-    })
-  }
-
-  // function handleEmailChange(event){
-  //   setEnteredEmail(event.target.value);
-  // }
-
-  // function handlePasswordChange(event){
-  //   setEnteredPassword(event.target.value);
-  // }
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
   function handleSubmit(event){
     // prevent default browser http request
     event.preventDefault();
-    console.log('userEmail: ' + enteredValues.email);
-    console.log('password: ' + enteredValues.password)
+    const enteredEmail = emailRef.current.value;
+    const enteredPassword = passwordRef.current.value;
+
+    console.log(enteredEmail, enteredPassword);
   }
   
   // form triggers submit event when button pressed
@@ -46,9 +24,8 @@ export default function Login() {
           <input 
             id="email" 
             type="email" 
-            name="email" 
-            onChange={(event) => handleInputChange(event.target.value, "email")} 
-            value={enteredValues.email}
+            name="email"
+            ref={emailRef} 
           />
         </div>
         <div className="control no-margin">
@@ -56,9 +33,8 @@ export default function Login() {
           <input 
             id="password" 
             type="password" 
-            name="password" 
-            onChange={(event) => handleInputChange(event.target.value, "password")}
-            value={enteredValues.password}
+            name="password"
+            ref={passwordRef} 
           />
         </div>
       </div>
