@@ -8,7 +8,7 @@ export default function Signup() {
 		// get multiple values (checkboxes with same name)
 		const acquisitionChannel = fd.getAll('acquisition')
 		
-		// calling fd.entries() gives an array of fields and their values
+		// calling fd.entries() gives an ~array of fields and their values
 		// calling Object.fromEntries() gives object with k-v pairs
 		const data = Object.fromEntries(fd.entries());
 		data.acquisition = acquisitionChannel;
