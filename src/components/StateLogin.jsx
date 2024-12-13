@@ -1,58 +1,30 @@
-import { useState } from 'react';
-
 import Input from './Input.jsx'
 import { isEmail, isNotEmpty, hasMinLength } from '../util/validation.js';
+import { useInput } from '../hooks/useInput.js'
 
 export default function Login() {
-  const [enteredValues, setEnteredValues] = useState({
-    email: '',
-    password: ''
-  })
 
-  const [didEdit, setDidEdit] = useState({
-    email: false,
-    password: false
-  });
-
-  // validate email on every keystroke
-  const emailIsInvalid = didEdit.email && !isEmail(enteredValues.email) && !isNotEmpty(enteredValues.email);
-  const passwordIsInvalid = didEdit.password && !hasMinLength(enteredValues.password, 6)
-
-  function handleInputChange(value, inputIdentifier){
-    setEnteredValues((previousValues) => {
-      return (
-        {
-          ...previousValues,
-          [inputIdentifier]: value
-        }
-      )
-    })
-    // once user edits field again, set didEdit to false
-    // will be reset to true once user completes input (onBlur fx)
-    // fires
-    setDidEdit((previousValues) => ({
-      ...previousValues,
-      [inputIdentifier]: false
-    }))
-  }
-
-  function handleInputBlur(inputIdentifier) {
-    setDidEdit((previousValues) => ({
-      ...previousValues,
-      [inputIdentifier]: true
-    }))
-  }
+  const {value: emailValue, 
+          handleInputChange: handleEmailChange,
+          handleInputBlur: handleEmailBlur,
+          hasError: emailHasError } 
+          = useInput('', (value) => isEmail(value) && isNotEmpty(value));
+  
+  const {value: passwordValue, 
+    handleInputChange: handlePasswordChange,
+    handleInputBlur: handlePasswordBlur,
+    hasError: passwordHasError } 
+    = useInput('', (value) => hasMinLength(value, 6));
 
   function handleSubmit(event){
     // prevent default browser http request
     event.preventDefault();
-    console.log('userEmail: ' + enteredValues.email);
-    console.log('password: ' + enteredValues.password)
-    // reset form
-    setEnteredValues({
-      email: '',
-      password: ''
-    })
+   
+    if (emailHasError || passwordHasError){
+      return;
+    }
+
+    console.log(emailValue, passwordValue)
   }
   
   // form triggers submit event when button pressed
@@ -65,20 +37,20 @@ export default function Login() {
           id="email"
           type="email"
           name="email"
-          onBlur={() => handleInputBlur("email")}
-          onChange={(event) => handleInputChange(event.target.value, "email")} 
-          value={enteredValues.email}
-          error={emailIsInvalid && 'Please enter a valid email'} 
+          onBlur={handleEmailBlur}
+          onChange={handleEmailChange} 
+          value={emailValue}
+          error={emailHasError && 'Please enter a valid email'} 
         />
         <Input 
           label="Password"
           id="password"
           type="password"
           name="password"
-          onBlur={() => handleInputBlur("password")}
-          onChange={(event) => handleInputChange(event.target.value, "password")}
-          value={enteredValues.password}
-          error={passwordIsInvalid && 'Please enter a valid password'} 
+          onBlur={handlePasswordBlur}
+          onChange={handlePasswordChange}
+          value={passwordValue}
+          error={passwordHasError && 'Please enter a valid password'} 
         />
       </div>
 
