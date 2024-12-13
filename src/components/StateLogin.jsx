@@ -39,7 +39,6 @@ export default function Login() {
     }))
   }
 
-
   function handleSubmit(event){
     // prevent default browser http request
     event.preventDefault();
