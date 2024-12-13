@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import Input from './Input.jsx'
+import { isEmail, isNotEmpty, hasMinLength } from '../util/validation.js';
 
 export default function Login() {
   const [enteredValues, setEnteredValues] = useState({
@@ -14,8 +15,8 @@ export default function Login() {
   });
 
   // validate email on every keystroke
-  const emailIsInvalid = didEdit.email && !enteredValues.email.includes('@');
-  const passwordIsInvalid = didEdit.password && !enteredValues.password.trim().length < 6;
+  const emailIsInvalid = didEdit.email && !isEmail(enteredValues.email) && !isNotEmpty(enteredValues.email);
+  const passwordIsInvalid = didEdit.password && !hasMinLength(enteredValues.password, 6)
 
   function handleInputChange(value, inputIdentifier){
     setEnteredValues((previousValues) => {
@@ -77,7 +78,7 @@ export default function Login() {
           onBlur={() => handleInputBlur("password")}
           onChange={(event) => handleInputChange(event.target.value, "password")}
           value={enteredValues.password}
-          error={emailIsInvalid && 'Please enter a valid password'} 
+          error={passwordIsInvalid && 'Please enter a valid password'} 
         />
       </div>
 
